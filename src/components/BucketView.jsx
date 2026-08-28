@@ -1,6 +1,6 @@
 import { formatInt } from '../lib/format'
 
-// Mostra o conteúdo de um bucket (área primária + overflow), destacando a chave buscada.
+// Exibe os dados e o overflow de um bucket
 function BucketView({ bucketIndex, bucket, highlightKey }) {
   return (
     <div className="bucket-view">

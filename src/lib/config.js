@@ -1,3 +1,2 @@
-// FR: capacidade de cada bucket (chaves por bucket). Definida pela equipe no código (RN09),
-// não é uma entrada do usuário — apenas o tamanho da página é (RN04).
+// Capacidade de registros por bucket (FR)
 export const BUCKET_CAPACITY_FR = 4

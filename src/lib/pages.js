@@ -1,4 +1,4 @@
-// Divide os registros carregados em páginas de tamanho fixo (RN06/RN07).
+// Divide as palavras em páginas de tamanho fixo
 export function splitIntoPages(words, pageSize) {
   const pages = []
   for (let i = 0; i < words.length; i += pageSize) {

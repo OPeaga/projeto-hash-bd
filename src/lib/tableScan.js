@@ -1,4 +1,4 @@
-// Table scan (RN21): leitura sequencial das páginas até encontrar a chave (ou esgotar todas).
+// Realiza a busca sequencial (table scan) nas páginas
 export function tableScan(pages, key) {
   const start = performance.now()
   const recordsRead = []

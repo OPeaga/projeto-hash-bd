@@ -55,7 +55,7 @@ function LoadScreen({ onLoaded }) {
     }
 
     setBuilding(true)
-    // deixa o React pintar o estado "construindo" antes do trabalho síncrono pesado
+    // Permite que o React atualize a interface antes do processamento
     await new Promise((resolve) => setTimeout(resolve, 0))
 
     const pages = splitIntoPages(words, size)

@@ -1,7 +1,6 @@
 import { formatInt } from '../lib/format'
 
-// Mostra uma página e seus registros. Se `previewCount` for informado, exibe só os
-// primeiros N registros (CA07). Caso contrário lista tudo, até `maxRecords`, e resume o resto.
+// Exibe uma página de dados e seus registros
 function PageView({ page, previewCount, maxRecords = 50, highlightKey }) {
   const shown = previewCount ? page.records.slice(0, previewCount) : page.records.slice(0, maxRecords)
   const hiddenCount = page.records.length - shown.length

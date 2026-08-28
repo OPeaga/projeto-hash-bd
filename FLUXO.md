@@ -16,16 +16,18 @@ App.jsx
 `App.jsx` só decide qual tela mostrar, com base em um único estado:
 
 ```jsx
-const [database, setDatabase] = useState(null)
+const [database, setDatabase] = useState(null);
 
-if (!database) return <LoadScreen onLoaded={setDatabase} />
-return <SearchScreen database={database} onReset={() => setDatabase(null)} />
+if (!database) return <LoadScreen onLoaded={setDatabase} />;
+return <SearchScreen database={database} onReset={() => setDatabase(null)} />;
 ```
 
 `database` é o objeto que sai da tela de carga e alimenta a tela de busca:
 
 ```js
-{ pages, index, pageSize, wordCount }
+{
+  (pages, index, pageSize, wordCount);
+}
 ```
 
 Enquanto `database` é `null`, o app está na tela 1 (carga). Assim que `LoadScreen` chama
@@ -44,9 +46,9 @@ Transforma o texto bruto do arquivo em um array de palavras:
 ```js
 export function parseWords(text) {
   return text
-    .split(/\r?\n/)      // quebra por linha
+    .split(/\r?\n/) // quebra por linha
     .map((line) => line.trim())
-    .filter(Boolean)      // descarta linhas vazias
+    .filter(Boolean); // descarta linhas vazias
 }
 ```
 
@@ -56,11 +58,11 @@ Fatia o array de palavras em páginas de tamanho fixo (definido pelo usuário na
 
 ```js
 export function splitIntoPages(words, pageSize) {
-  const pages = []
+  const pages = [];
   for (let i = 0; i < words.length; i += pageSize) {
-    pages.push({ number: pages.length, records: words.slice(i, i + pageSize) })
+    pages.push({ number: pages.length, records: words.slice(i, i + pageSize) });
   }
-  return pages
+  return pages;
 }
 ```
 
@@ -78,14 +80,14 @@ A função hash própria (obrigatória pelo enunciado — não pode usar hash pr
 Hash polinomial pelo método de Horner:
 
 ```js
-const HASH_PRIME = 131
+const HASH_PRIME = 131;
 
 export function hashKey(key, bucketCount) {
-  let hash = 0
+  let hash = 0;
   for (let i = 0; i < key.length; i++) {
-    hash = (hash * HASH_PRIME + key.charCodeAt(i)) % bucketCount
+    hash = (hash * HASH_PRIME + key.charCodeAt(i)) % bucketCount;
   }
-  return hash
+  return hash;
 }
 ```
 
@@ -100,7 +102,7 @@ produz o mesmo número pro mesmo `bucketCount`.
 
 ```js
 export function computeBucketCount(recordCount, fr) {
-  return Math.floor(recordCount / fr) + 1   // garante NB > NR/FR
+  return Math.floor(recordCount / fr) + 1; // garante NB > NR/FR
 }
 ```
 
@@ -110,15 +112,15 @@ registro:
 ```js
 for (const page of pages) {
   for (const key of page.records) {
-    const bucketIndex = hashKey(key, nb)         // 1. aplica o hash
-    const bucket = buckets[bucketIndex]           // 2. acha o bucket
-    const entry = { key, pageNumber: page.number }
+    const bucketIndex = hashKey(key, nb); // 1. aplica o hash
+    const bucket = buckets[bucketIndex]; // 2. acha o bucket
+    const entry = { key, pageNumber: page.number };
 
     if (bucket.primary.length < fr) {
-      bucket.primary.push(entry)                   // 3a. cabe na área primária
+      bucket.primary.push(entry); // 3a. cabe na área primária
     } else {
-      collisions++
-      bucket.overflow.push(entry)                   // 3b. bucket cheio → overflow (colisão)
+      collisions++;
+      bucket.overflow.push(entry); // 3b. bucket cheio → overflow (colisão)
     }
   }
 }
@@ -131,8 +133,8 @@ próprio bucket). Uma inserção só conta como **colisão** quando a área prim
 No final, `buildIndex` também calcula as métricas pedidas pelo enunciado:
 
 ```js
-collisionRate = (collisions / recordCount) * 100
-overflowRate  = (overflowBuckets / nb) * 100     // buckets com overflow.length > 0
+collisionRate = (collisions / recordCount) * 100;
+overflowRate = (overflowBuckets / nb) * 100; // buckets com overflow.length > 0
 ```
 
 **`searchByIndex(index, key)`** faz o caminho inverso: aplica o mesmo hash na chave buscada,
@@ -148,9 +150,12 @@ registros de cada uma, até achar a chave (ou esgotar tudo):
 
 ```js
 for (const page of pages) {
-  pagesRead++
-  recordsRead.push(...page.records)
-  if (page.records.includes(key)) { foundPage = page.number; break }
+  pagesRead++;
+  recordsRead.push(...page.records);
+  if (page.records.includes(key)) {
+    foundPage = page.number;
+    break;
+  }
 }
 ```
 
@@ -203,7 +208,7 @@ só consulta).
   pra não travar o navegador — o dado completo fica em memória, só a exibição é cortada).
 - **Comparação**: só aparece quando os dois resultados existem ao mesmo tempo
   (`indexResult && scanResult`). Calcula a diferença de tempo (`scanResult.timeMs -
-  indexResult.timeMs`) e a diferença percentual de custo em páginas lidas.
+indexResult.timeMs`) e a diferença percentual de custo em páginas lidas.
 
 ## Componentes de visualização
 
